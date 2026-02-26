@@ -36,6 +36,24 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+        # changes here
+        #1. Name should note be empty
+        if not name:
+            return render_template('register.html', error='Name cannot be empty')
+        
+        #2. Email should not be empty
+        if not email:
+            return render_template('register.html', error='Email cannot be empty')
+        #3. Password should not be empty
+        if not password:
+            return render_template('register.html', error='Password cannot be empty')
+        #4 Email should be unique
+        if User.query.filter_by(email=email).first():
+            return render_template('register.html', error='Email already exists')
+        #5. Password should be at least 6 characters long
+        if len(password) < 6:
+            return render_template('register.html', error='Password should be at least 6 characters long')
+        
         
         new_user = User(name=name, email=email, password=password)
         db.session.add(new_user)
@@ -67,12 +85,10 @@ def dashboard():
         return render_template("dashboard.html", user=user)
     return redirect('/login')
 
-
 @app.route('/logout')
 def logout():
     session.pop('email',None)
     return redirect('/login') 
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

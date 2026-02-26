@@ -3,6 +3,10 @@
 {% block body %}
 <div class="container">
     <h1 class="text-center">Register New Employee</h1>
+    
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
     <form action="/register" method="post">
         <div class="mb3">
             <label for="" class="form-label">Full Name</label>
